@@ -38,9 +38,9 @@ describe('First Api Tests', () => {
         expect(response.status).to.equal(StatusCodes.OK);
         expect(response.data.json).to.eql(body);
 
-        //expect(response.data.json.name).to.eql('Fred');
-        //expect(response.data.json.age).to.eql('56');
-        //expect(response.data.json.city).to.eql('New York');
+        expect(response.data.json.name).to.eql('Fred');
+        expect(response.data.json.age).to.eql('56');
+        expect(response.data.json.city).to.eql('New York');
     });
 
     //Consumiendo servicios HEAD
@@ -61,8 +61,6 @@ describe('First Api Tests', () => {
         const response = await axios.delete('https://httpbin.org/delete', body);
         expect(response.status).to.equal(StatusCodes.OK);
         expect(response.data.json).to.eql(null);
-
-        //console.log(response)
     
     });
     
