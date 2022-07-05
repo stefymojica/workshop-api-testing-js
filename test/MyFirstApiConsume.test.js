@@ -85,18 +85,4 @@ describe('First Api Tests', () => {
     expect(response.status).to.equal(StatusCodes.OK);
     expect(response.data.json).to.eql(body);
   });
-
-  // prueba autenticacion por parametros
-  it('Via OAuth2 Tokens by parameter', async () => {
-    const urlBase = 'https://api.github.com';
-    const githubUserName = 'stefymojica';
-    const repository = 'workshop-api-testing-js';
-    const response = await axios.get(
-      `${urlBase}/repos/${githubUserName}/${repository}`,
-      { access_token: process.env.ACCESS_TOKEN }
-    );
-
-    expect(response.status).to.equal(StatusCodes.OK);
-    expect(response.data.description).equal('This is a Workshop about API Testing in JavaScript');
-  });
 });
