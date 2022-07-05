@@ -85,4 +85,15 @@ describe('First Api Tests', () => {
     expect(response.status).to.equal(StatusCodes.OK);
     expect(response.data.json).to.eql(body);
   });
+  
+  //prueba autenticacion por parametros
+  it('Via OAuth2 Tokens by parameter', async () => {
+    const response = await axios.get(
+      `${urlBase}/repos/${githubUserName}/${repository}`,
+      { access_token: process.env.ACCESS_TOKEN }
+    );
+  
+    expect(response.status).to.equal(StatusCodes.OK);
+    expect(response.data.description).equal('This is a Workshop about Api Testing in JavaScript');
+  });
 });
