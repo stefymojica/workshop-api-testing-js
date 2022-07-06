@@ -2,10 +2,34 @@ const axios = require('axios');
 const { expect } = require('chai');
 const chai = require('chai');
 chai.use(require('chai-subset'));
+const { StatusCodes } = require('http-status-codes');
+
+const urlBase = 'https://api.github.com';
+const githubUserName = 'stefymojica';
+const repository = 'workshop-api-testing-js';
+
+describe('Github Api Test', () => {
+  describe('Authentication', () => {
+    it('Via OAuth2 Tokens by Header', async () => {
+      const response = await axios.get(`${urlBase}/repos/${githubUserName}/${repository}`, {
+        headers: {
+          Authorization: `${process.env.ACCESS_TOKEN}`
+        }
+      });
+
+      expect(response.status).to.equal(StatusCodes.OK);
+      expect(response.data.description).equal('This is a Workshop about API Testing in JavaScript');
+    });
+  });
+});
 
 describe('Api Github', () => {
   it('Consume GET service', async () => {
-    const response = await axios.get('https://api.github.com/users/aperdomob');
+    const response = await axios.get('https://api.github.com/users/aperdomob', {
+      headers: {
+        Authorization: `${process.env.ACCESS_TOKEN}`
+      }
+    });
 
     expect(response.data.name).to.equal('Alejandro Perdomo');
     expect(response.data.company).to.equal('Perficient Latam');
@@ -13,7 +37,11 @@ describe('Api Github', () => {
   });
 
   it('jasmine-json-report repository', async () => {
-    const response = await axios.get('https://api.github.com/users/aperdomob/repos');
+    const response = await axios.get('https://api.github.com/users/aperdomob/repos', {
+      headers: {
+        Authorization: `${process.env.ACCESS_TOKEN}`
+      }
+    });
     const found = response.data.find((element) => element.name === 'jasmine-json-report');
 
     expect(found.name).to.equal('jasmine-json-report');
@@ -22,7 +50,11 @@ describe('Api Github', () => {
   });
 
   it('Download repository', async () => {
-    const response = await axios.get('https://api.github.com/repos/aperdomob/jasmine-json-report');
+    const response = await axios.get('https://api.github.com/repos/aperdomob/jasmine-json-report', {
+      headers: {
+        Authorization: `${process.env.ACCESS_TOKEN}`
+      }
+    });
     const url = `${response.data.svn_url}/archive/refs/heads/master.zip`;
     const ResponseUrl = await axios.get(url);
     const zip = ResponseUrl.data;
@@ -38,7 +70,11 @@ describe('Api Github', () => {
       sha: '360eee6c223cee31e2a59632a2bb9e710a52cdc0'
     };
 
-    const response = await axios.get('https://api.github.com/repos/aperdomob/jasmine-json-report/contents');
+    const response = await axios.get('https://api.github.com/repos/aperdomob/jasmine-json-report/contents', {
+      headers: {
+        Authorization: `${process.env.ACCESS_TOKEN}`
+      }
+    });
     const readme = response.data.find((element) => element.name === 'README.md');
 
     expect(readme).containSubset(FormatReadme);
