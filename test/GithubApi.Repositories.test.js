@@ -4,33 +4,46 @@ const chai = require('chai');
 chai.use(require('chai-subset'));
 
 describe('Api Github', () => {
-  it('Consume GET service', async () => {
-    const response = await axios.get('https://api.github.com/users/aperdomob', {
+  let user;
+  let reposResponse;
+  let jasmineRepo;
+  let content;
+  let readme;
+  const expectRepository = 'jasmine-json-report';
+
+  before(async () => {
+    user = await axios.get('https://api.github.com/users/aperdomob', {
       headers: {
         Authorization: `${process.env.ACCESS_TOKEN}`
       }
     });
-
-    expect(response.data.name).to.equal('Alejandro Perdomo');
-    expect(response.data.company).to.equal('Perficient Latam');
-    expect(response.data.location).to.equal('Colombia');
+    reposResponse = await axios.get(`${user.data.repos_url}`, {
+      headers: {
+        Authorization: `${process.env.ACCESS_TOKEN}`
+      }
+    });
+    jasmineRepo = reposResponse.data.find((element) => element.name === expectRepository);
+    content = await axios.get(`${jasmineRepo.url}/contents`, {
+      headers: {
+        Authorization: `${process.env.ACCESS_TOKEN}`
+      }
+    });
+    readme = content.data.find((element) => element.name === 'README.md');
+  });
+  it('Get user', async () => {
+    expect(user.data.name).to.equal('Alejandro Perdomo');
+    expect(user.data.company).to.equal('Perficient Latam');
+    expect(user.data.location).to.equal('Colombia');
   });
 
-  it('jasmine-json-report repository', async () => {
-    const response = await axios.get('https://api.github.com/users/aperdomob/repos', {
-      headers: {
-        Authorization: `${process.env.ACCESS_TOKEN}`
-      }
-    });
-    const found = response.data.find((element) => element.name === 'jasmine-json-report');
-
-    expect(found.name).to.equal('jasmine-json-report');
-    expect(found.visibility).to.equal('public');
-    expect(found.description).to.equal('A Simple Jasmine JSON Report');
+  it('Get repository', async () => {
+    expect(jasmineRepo.name).to.equal('jasmine-json-report');
+    expect(jasmineRepo.visibility).to.equal('public');
+    expect(jasmineRepo.description).to.equal('A Simple Jasmine JSON Report');
   });
 
   it('Download repository', async () => {
-    const response = await axios.get('https://api.github.com/repos/aperdomob/jasmine-json-report', {
+    const response = await axios.get(`${jasmineRepo.url}`, {
       headers: {
         Authorization: `${process.env.ACCESS_TOKEN}`
       }
@@ -39,8 +52,7 @@ describe('Api Github', () => {
     const ResponseUrl = await axios.get(url);
     const zip = ResponseUrl.data;
 
-    // eslint-disable-next-line no-unused-expressions
-    expect(zip).to.exist;
+    expect(zip).to.have.lengthOf.above(1);
   });
 
   it('File list', async () => {
@@ -49,14 +61,9 @@ describe('Api Github', () => {
       path: 'README.md',
       sha: '360eee6c223cee31e2a59632a2bb9e710a52cdc0'
     };
-
-    const response = await axios.get('https://api.github.com/repos/aperdomob/jasmine-json-report/contents', {
-      headers: {
-        Authorization: `${process.env.ACCESS_TOKEN}`
-      }
-    });
-    const readme = response.data.find((element) => element.name === 'README.md');
-
     expect(readme).containSubset(FormatReadme);
+  });
+
+  it('Download Readme', async () => {
   });
 });
