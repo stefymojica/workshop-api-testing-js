@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { expect } = require('chai');
 const chai = require('chai');
+const md5 = require('md5');
 chai.use(require('chai-subset'));
 
 describe('Api Github', () => {
@@ -65,5 +66,10 @@ describe('Api Github', () => {
   });
 
   it('Download Readme', async () => {
+    const expectMd5 = '497eb689648cbbda472b16baaee45731';
+    const downloadReadme = await axios.get(`${readme.download_url}`);
+    const readmeContent = downloadReadme.data;
+
+    expect(md5(readmeContent)).to.equal(expectMd5);
   });
 });
