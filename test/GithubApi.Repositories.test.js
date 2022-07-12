@@ -3,6 +3,7 @@ const { expect } = require('chai');
 const chai = require('chai');
 const md5 = require('md5');
 chai.use(require('chai-subset'));
+require('dotenv').config();
 
 describe('Api Github', () => {
   let user;
