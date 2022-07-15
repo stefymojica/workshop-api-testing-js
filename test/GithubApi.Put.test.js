@@ -1,6 +1,5 @@
-/* eslint-disable no-undef */
 const axios = require('axios');
-const { expect, assert } = require('chai');
+const { expect } = require('chai');
 const { StatusCodes } = require('http-status-codes');
 require('dotenv').config();
 
