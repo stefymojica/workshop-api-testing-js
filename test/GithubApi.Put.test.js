@@ -10,11 +10,15 @@ describe('Should interact with the user', () => {
   describe('Should follow the user', () => {
     let followUser;
     before(async () => {
-      followUser = await axios.put(`${urlBase}${user}`, {}, {
-        headers: {
-          Authorization: `token ${process.env.ACCESS_TOKEN}`
+      followUser = await axios.put(
+        `${urlBase}${user}`,
+        {},
+        {
+          headers: {
+            Authorization: `token ${process.env.ACCESS_TOKEN}`
+          }
         }
-      });
+      );
     });
     it('Should verify that you follow the user', () => {
       expect(followUser.status).to.equal(StatusCodes.NO_CONTENT);
@@ -30,7 +34,9 @@ describe('Should interact with the user', () => {
           Authorization: `token ${process.env.ACCESS_TOKEN}`
         }
       });
-      loginUser = response.data.find((elemento) => elemento.login === 'aperdomob');
+      loginUser = response.data.find(
+        (elemento) => elemento.login === 'aperdomob'
+      );
     });
     it('Should check the list and verify that follow the user', async () => {
       expect(loginUser.login).to.equal('aperdomob');
@@ -39,11 +45,15 @@ describe('Should interact with the user', () => {
   describe('Following the user again', () => {
     let followUserAgain;
     before(async () => {
-      followUserAgain = await axios.put(`${urlBase}${user}`, {}, {
-        headers: {
-          Authorization: `token ${process.env.ACCESS_TOKEN}`
+      followUserAgain = await axios.put(
+        `${urlBase}${user}`,
+        {},
+        {
+          headers: {
+            Authorization: `token ${process.env.ACCESS_TOKEN}`
+          }
         }
-      });
+      );
     });
     it('Should verifiy that the user is followed', async () => {
       expect(followUserAgain.status).to.equal(StatusCodes.NO_CONTENT);
@@ -59,7 +69,9 @@ describe('Should interact with the user', () => {
           Authorization: `token ${process.env.ACCESS_TOKEN}`
         }
       });
-      loginUser = checkUser.data.find((elemento) => elemento.login === 'aperdomob');
+      loginUser = checkUser.data.find(
+        (elemento) => elemento.login === 'aperdomob'
+      );
     });
     it('Should check the list and verify that follow the user', async () => {
       expect(loginUser.login).to.equal('aperdomob');
