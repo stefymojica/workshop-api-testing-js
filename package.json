@@ -4,7 +4,7 @@
   "description": "This is a Workshop about Api Testing in JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint && mocha -t 5000 --reporter mochawesome --reporter-options reportDir=report,reportFilename=ApiTesting",
+    "test": "yarn lint && mocha -t 5000 --reporter mochawesome --reporter-options reportDir=report,reportFilename=ApiTesting",
     "lint": "eslint ./test/**/*.js"
   },
   "repository": {
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/stefymojica/workshop-api-testing-js#readme",
   "devDependencies": {
     "chai": "^4.3.6",
+    "chai-subset": "^1.6.0",
     "eslint": "^8.19.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
@@ -32,6 +33,8 @@
     "mochawesome": "^7.1.3"
   },
   "dependencies": {
-    "axios": "^0.27.2"
+    "axios": "^0.27.2",
+    "md5": "^2.3.0",
+    "md5-hash": "^1.0.1"
   }
 }
