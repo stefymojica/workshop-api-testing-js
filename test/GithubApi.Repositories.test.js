@@ -31,7 +31,9 @@ describe('Api Github', () => {
     let readme;
     const expectRepository = 'jasmine-json-report';
     before(async () => {
-      jasmineRepo = reposResponse.data.find((element) => element.name === expectRepository);
+      jasmineRepo = reposResponse.data.find(
+        (element) => element.name === expectRepository
+      );
       content = await axios.get(`${jasmineRepo.url}/contents`, {
         headers: {
           Authorization: `${process.env.ACCESS_TOKEN}`
