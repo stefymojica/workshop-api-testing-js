@@ -3,7 +3,6 @@ const { expect } = require('chai');
 const chai = require('chai');
 const md5 = require('md5');
 chai.use(require('chai-subset'));
-require('dotenv').config();
 
 describe('Api Github', () => {
   let user;
@@ -31,9 +30,7 @@ describe('Api Github', () => {
     let readme;
     const expectRepository = 'jasmine-json-report';
     before(async () => {
-      jasmineRepo = reposResponse.data.find(
-        (element) => element.name === expectRepository
-      );
+      jasmineRepo = reposResponse.data.find((element) => element.name === expectRepository);
       content = await axios.get(`${jasmineRepo.url}/contents`, {
         headers: {
           Authorization: `${process.env.ACCESS_TOKEN}`
